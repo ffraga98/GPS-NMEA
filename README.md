@@ -1,8 +1,6 @@
 # GPS-NMEA
 **Visualización de mensajes de GPS en formato NMEA**
 
----
-
 ## Objetivo
 
 El objetivo de este T.P. consiste en desarrollar un aplicaivo de consola con comandos en línea de órdenes y escrito en lenguaje ANSI C, que permita interpretar mensajes GPS en fomrato NMEA a partir de un archivo y presentado en formato CSV y [KML](https://developers.google.com/kml/documentation/kmlreference?hl=es1).
@@ -12,11 +10,15 @@ Dicha aplicación es capas de generar archivos de salida en formato CSV y KML co
 
 
 El programa ejecutable fue desarrollado para Unix, y debe ser invocado de la siguiente manera:
+
 ```shell
 ./gpsviewer -fmt <formato> -out <salida> <entrada>
 ```
 
-### Formato de salida: \<formato\> 
+### Formato de salida
+
+*\<formato\>*
+
 |  Comando |           Descripcion        |       Valor       |       Tipo de Dato        |
 |----------|------------------------------|-------------------|---------------------------|
 | - fmt    | Formato del índice a generar | "csv" <br/> "kml" |   char[] <br/> char[]     |
@@ -76,13 +78,13 @@ Para más información dirigirse a la [documentación oficial](https://developer
 
 Estos archivos pueden ser procesados por el programa *Google Earth*, lo que permite visualiza la trayectoria. 
 
-### Archivo de salida: \<salida\> 
-  
-  Ruta del archivo índice que se desea construir.
+### Archivo de salida
 
-### Archivo de entrada: \<formato\> 
-  
-  Ruta del archiov de texto que contiene los mensajes GPS.
+*\<salida\>*: Ruta del archivo índice que se desea construir.
+
+### Archivo de entrada
+
+*\<entrada\>*: Ruta del archiov de texto que contiene los mensajes GPS.
   
 #### Formato de entrada
 
@@ -111,11 +113,31 @@ Estos archivos pueden ser procesados por el programa *Google Earth*, lo que perm
 |       \<CR\> \<LF\>           |            |        |               Fin de mensaje                 |
 
 
-La suma de verificación es una verificación compuesta de un carácter en formato hexadecimal definido según la especificación NMEA. Consiste de una operación OR de los 7 bits menos significativos de cara carácter después del "$" y antes del "*". El resultado binario de la operaión es representado en el equivalente ASCII de dos caracteres hexadeximales. Cada mensajes interpretado deberá ser verificado.
+La *suma de verificación* es una verificación compuesta de un carácter en formato hexadecimal definido según la especificación NMEA. Consiste de una operación OR de los 7 bits menos significativos de cara carácter después del "$" y antes del "*". El resultado binario de la operación es representado en el equivalente ASCII de dos caracteres hexadeximales. Cada mensajes interpretado deberá ser verificado.
 
 Todos los mensajes de tipos distintos al `GGA` son ignorados. 
 
 El programa ordena por el campo de `Tiempo UTC` para poder reconstruir las trayectorias correctamente.
 
+## Ejemplos de ejecución
 
+### Compilación
+
+Posee un archivo `makefile`, por lo que para la compilación solo basta con ejecutar el siguiente comando en la carpeta de la aplicación.
+
+```shell
+make all
+```
+
+### Ejecución
+
+Una vez compilado el programa, se puede ejecutar los comandos en el [formato especificado anteriormente](#desarrollo). A continuación unos ejemplos que el usuario mismo puede replicar.
+
+```shell
+./gpsviewer -fmt csv -out out/ejemplo.csv trayectoria-A.txt
+```
+
+```shell
+./gpsviewer -fmt kml -out out/ejemplo.kml trayectoria-B.txt
+```
 
